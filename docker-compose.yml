@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    container_name: kube-backend
+    restart: always
+
+  frontend:
+    build: ./frontend/kube-credential-frontend
+    ports:
+      - "5174:5174"
+    container_name: kube-frontend
+    restart: always    
