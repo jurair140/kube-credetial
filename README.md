@@ -12,6 +12,7 @@ A microservice-based web application designed to issue and verify digital creden
 - [API Endpoints](#api-endpoints)
 - [Setup & Installation](#setup--installation)
 - [Configuration](#configuration)
+- [Testing](#testing)
 - [Assumptions & Notes](#assumptions--notes)
 - [Author](#author)
 
@@ -91,7 +92,9 @@ KUBE-CREDENTIAL/
 │   ├── src/
 │   │   ├── db.json
 │   │   ├── index.ts
-│   │   └── router.ts
+│   │   ├── router.ts
+│   │   └── tests/
+│   │       └── routes.test.ts
 │
 ├── frontend/
 │   └── kube-credential-frontend/
@@ -168,7 +171,7 @@ Content-Type: application/json
 
 #### 1. Clone Repository
 ```bash
-git clone https://github.com/jurair140/kube-credential.git
+git clone https://github.com/<your-repo>/kube-credential.git
 cd kube-credential
 ```
 
@@ -176,11 +179,7 @@ cd kube-credential
 ```bash
 cd backend
 npm install
-npm start
-or
 npx ts-node src/index.ts
-
-
 ```
 Server runs at: `http://localhost:3001`
 
@@ -191,6 +190,13 @@ npm install
 npm run dev
 ```
 Frontend runs at: `http://localhost:5174`
+
+#### 4. Run Tests (Optional)
+```bash
+cd backend
+npm test
+```
+This will run the test suite located in `src/tests/routes.test.ts` to verify the API endpoints.
 
 ### Option 2: 🐳 Run Using Docker Compose (Recommended)
 
@@ -215,7 +221,7 @@ docker-compose down
 
 ### Running Locally
 
-If you are running the application locally (without cloud hosted backend), you need to update the API URLs in:
+If you are running the application locally (without Docker), you need to update the API URLs in:
 
 - `frontend/src/api/issuance.ts`
 - `frontend/src/api/verification.ts`
@@ -230,20 +236,49 @@ To:
 const res = await axios.post('http://localhost:3001/issue', credential);
 ```
 
-## 📝 Notes
+## 🧪 Testing
+
+The backend includes a comprehensive test suite to ensure API reliability.
+
+### Running Tests
+
+#### Run All Tests
+```bash
+cd backend
+npm test
+```
+
+#### Test Coverage
+
+The test suite (`src/tests/routes.test.ts`) covers:
+- ✅ Credential issuance endpoint (`/issue`)
+- ✅ Credential verification endpoint (`/verify`)
+- ✅ Error handling and edge cases
+- ✅ Worker ID assignment
+- ✅ Timestamp validation
+
+### Test Output Example
+```
+✓ POST /issue - should issue a new credential
+✓ POST /issue - should not issue duplicate credentials
+✓ POST /verify - should verify existing credentials
+✓ POST /verify - should return invalid for non-existent credentials
+```
+
+## 📝 Assumptions & Notes
 
 - Each credential must include a unique `id`.
 - Backend uses `db.json` to simulate persistence (can be replaced with MongoDB).
 - The app demonstrates the core Kubernetes concept of scaling pods — using the `WORKER_ID` to indicate which worker issued the credential.
-- Unit tests and K8s YAML manifests can be added in the `/tests` and `/k8s` folders respectively.
+- The test suite uses popular testing frameworks to ensure API reliability and correctness.
+- K8s YAML manifests can be added in the `/k8s` folder for Kubernetes deployment.
 
 ## 👤 Author
 
-   Jurair C
+**Jurair C**
 
 - 📧 Email: jurair140@gmail.com
 - 📞 Phone: +91-9656266809
-- Cloud Deployed Project Link : https://kube-credential-frondend.vercel.app/
 
 ---
 
