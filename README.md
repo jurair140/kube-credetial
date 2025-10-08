@@ -171,7 +171,7 @@ Content-Type: application/json
 
 #### 1. Clone Repository
 ```bash
-git clone https://github.com/<your-repo>/kube-credential.git
+git clone https://github.com/jurair140/kube-credential.git
 cd kube-credential
 ```
 
